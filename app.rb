@@ -1,6 +1,7 @@
 require("sinatra")
 require("sinatra/reloader")
 also_reload("lib/**/*.rb")
+require("./lib/specialties")
 require("./lib/doctors")
 require("./lib/patients")
 require("pg")
@@ -43,4 +44,43 @@ post("/patients_add") do
   @patient = Patient.new({:name => patient_name, :birthday => birthday, :doctor_id => doctor_id})
   @patient.save()
   erb(:doctor)
+end
+
+
+
+post("/doctors_add") do
+  doctor_name = params.fetch("doctor_name")
+  specialty = params.fetch("specialty")
+  specialty_id = params.fetch("specialty_id").to_i()
+  @specialty = Specialty.find(specialty_id)
+  @doctor = Doctor.new({:name => doctor_name, :specialty => specialty, :specialty_id => specialty_id, :id => nil})
+  @doctor.save()
+  erb(:specialty)
+end
+
+
+
+
+
+
+get("/specialties/new") do
+  erb(:specialties_form)
+end
+
+get("/viewspecialties") do
+  @specialties = Specialty.all()
+  erb(:specialties_list)
+end
+
+post("/specialties") do
+  name = params.fetch("specialty_name")
+  specialty = Specialty.new({:name => name, :id => nil})
+  specialty.save()
+  @specialties = Specialty.all()
+  erb(:specialties_list)
+end
+
+get("/specialty/:id") do
+  @specialty = Specialty.find(params.fetch("id").to_i())
+  erb(:specialty)
 end

@@ -1,0 +1,18 @@
+<h1>Please click the department that you would like to enter.</h1>
+
+<% if @specialties.any?() %>
+  <h3>These are the hospital's current departments:</h3>
+
+  <ul>
+    <% @specialties.each() do |specialty| %>
+      <li><a href="/specialty/<%= specialty.id()%>"><%= specialty.name() %><%=" "%></a> </li>
+    <% end %>
+  </ul>
+
+<% else %>
+
+    <p>There are no departments yet!</p>
+
+<% end %>
+
+<a href="/" class="btn btn-info">Back</a>
