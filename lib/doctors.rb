@@ -1,29 +1,53 @@
-class Patient
-  attr_accessor(:name, :birthday, :doctor_id)
+class Doctor
+  attr_accessor(:name, :specialty, :id)
 
   define_method(:initialize) do |attributes|
     @name = attributes.fetch(:name)
-    @birthday = attributes.fetch(:birthday)
-    @doctor_id = attributes.fetch(:doctor_id)
+    @specialty = attributes.fetch(:specialty)
+    @id = attributes.fetch(:id)
   end
 
   define_singleton_method(:all) do
-    returned_patients = DB.exec("SELECT * FROM patients;")
-    patients = []
-    returned_patients.each() do |patient|
-      name = patient.fetch("name")
-      birthday = patient.fetch("birthday")
-      doctor_id = patient.fetch("doctor_id").to_i()
-      patients.push(Patient.new({:name => name, :birthday => birthday, :doctor_id => doctor_id}))
+    returned_doctors = DB.exec("SELECT * FROM doctors;")
+    doctors = []
+    returned_doctors.each() do |doctor|
+      name = doctor.fetch("name")
+      specialty = doctor.fetch("specialty")
+      id = doctor.fetch("id").to_i()
+      doctors.push(Doctor.new({:name => name, :specialty => specialty, :id => id}))
     end
-    patients
-  end
-
-  define_method(:==) do |another_patient|
-    self.name().==(another_patient.name()).&(self.doctor_id().==(another_patient.doctor_id())).&(self.birthday().==(another_patient.birthday()))
+    doctors
   end
 
   define_method(:save) do
-    DB.exec("INSERT INTO patients (name, doctor_id, birthday) VALUES ('#{@name}', #{@doctor_id}, '#{@birthday}')")
+    result = DB.exec("INSERT INTO doctors (name, specialty) VALUES ('#{@name}', '#{@specialty}') RETURNING id;")
+    @id = result.first().fetch("id").to_i()
   end
+
+  define_method(:==) do |another_doctor|
+    self.name().==(another_doctor.name()).&(self.id().==(another_doctor.id())).&(self.specialty().==(another_doctor.specialty()))
+  end
+
+  define_singleton_method(:find) do |id|
+    found_doctor = nil
+    Doctor.all().each() do |doctor|
+      if doctor.id().==(id)
+        found_doctor = doctor
+      end
+    end
+    found_doctor
+  end
+
+  define_method(:patients) do |id|
+    found_patients = []
+    Patient.all().each() do |patient|
+      if patient.doctor_id().==(id)
+        found_patients.push(patient)
+      end
+    end
+    found_patients
+  end
+
+
+
 end

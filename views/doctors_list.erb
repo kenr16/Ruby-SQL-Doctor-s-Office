@@ -1,0 +1,18 @@
+<h1>Currently Employed Doctors</h1>
+
+<% if @doctors.any?() %>
+  <h3>These doctors are in your service:</h3>
+
+  <ul>
+    <% @doctors.each() do |doctor| %>
+      <li><a href="/doctor/<%= doctor.id()%>"><%= doctor.name() %><%=", "%><%= doctor.specialty() %></a> </li>
+    <% end %>
+  </ul>
+
+<% else %>
+
+    <p>There are no doctors yet!</p>
+
+<% end %>
+
+<a href="/" class="btn btn-info">Back</a>

@@ -1,0 +1,28 @@
+<h1><%= @doctor.name() %></h1>
+
+<% if @doctor.patients(@doctor.id()).any?() %>
+  <h3>Here are all the patients for this doctor:</h3>
+  <ul>
+    <% @doctor.patients(@doctor.id()).each() do |patient| %>
+      <li> <%= patient.name %><%=" - "%><%= patient.birthday %> </li>
+    <% end %>
+  </ul>
+
+<% else %>
+  <p>There are no patients for this doctor!</p>
+<% end %>
+
+<h3>Add a patient for <%= @doctor.name() %> </h3>
+
+<form action="/patients_add" method="post">
+  <input id="doctor_id" name="doctor_id" type="hidden" value="<%= @doctor.id() %>">
+
+  <label for="patient_name">Name of the Patient:</label>
+  <input id="patient_name" name="patient_name" type="text">
+
+  <label for="birthday">Patient's Date of Birth:</label>
+  <input id="birthday" name="birthday" type="text">
+
+  <button type="submit">Add Patient</button>
+</form>
+<a href="/" class="btn btn-info">Back</a>

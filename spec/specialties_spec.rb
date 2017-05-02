@@ -1,31 +1,24 @@
 require("spec_helper")
 
-describe("Doctor") do
+describe("Specialty") do
   describe(".all") do
-    it("starts off with no doctors") do
-      expect(Doctor.all()).to(eq([]))
+    it("starts off with no specialties") do
+      expect(Specialty.all()).to(eq([]))
     end
   end
 
   describe("#name") do
-    it("tells you the doctor's name") do
-      doctor = Doctor.new({:name => "Dr. Andrews", :specialty => "Optometry", :id => nil})
-      expect(doctor.name()).to(eq("Dr. Andrews"))
-    end
-  end
-
-  describe("#specialty") do
-    it("tells you the doctor's specialty") do
-      doctor = Doctor.new({:name => "Dr. Andrews", :specialty => "Optometry", :id => nil})
-      expect(doctor.specialty()).to(eq("Optometry"))
+    it("tells you the specialty's name") do
+      specialty = Specialty.new({:name => "Orthopedics", :id => nil})
+      expect(specialty.name()).to(eq("Orthopedics"))
     end
   end
 
   describe("#id") do
-    it("sets doctors ID when you save it") do
-      doctor = Doctor.new({:name => "Dr. Andrews", :specialty => "Optometry", :id => nil})
-      doctor.save()
-      expect(doctor.id()).to(be_an_instance_of(Fixnum))
+    it("sets specialty's ID when you save it") do
+      specialty = Specialty.new({:name => "Orthopedics", :id => nil})
+      specialty.save()
+      expect(specialty.id()).to(be_an_instance_of(Fixnum))
     end
   end
 
