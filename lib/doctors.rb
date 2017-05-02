@@ -21,6 +21,19 @@ class Doctor
     doctors
   end
 
+  define_singleton_method(:sort) do
+    returned_doctors = DB.exec("SELECT * FROM doctors ORDER BY name;")
+    doctors = []
+    returned_doctors.each() do |doctor|
+      name = doctor.fetch("name")
+      specialty = doctor.fetch("specialty")
+      id = doctor.fetch("id").to_i()
+      specialty_id = doctor.fetch("specialty_id").to_i()
+      doctors.push(Doctor.new({:name => name, :specialty => specialty, :specialty_id => specialty_id, :id => id}))
+    end
+    doctors
+  end
+
   define_method(:save) do
     result = DB.exec("INSERT INTO doctors (name, specialty, specialty_id) VALUES ('#{@name}', '#{@specialty}', '#{@specialty_id}') RETURNING id;")
     @id = result.first().fetch("id").to_i()
@@ -38,6 +51,10 @@ class Doctor
       end
     end
     found_doctor
+  end
+
+  define_method(:number_of_patients) do |doctor_id|
+    returned_number = DB.exec("SELECT COUNT(doctor_id) FROM patients WHERE doctor_id = #{doctor_id.to_i()};")
   end
 
   define_method(:patients) do |id|

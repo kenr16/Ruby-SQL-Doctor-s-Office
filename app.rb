@@ -14,7 +14,7 @@ get("/") do
 end
 
 get("/viewdoctors") do
-  @doctors = Doctor.all()
+  @doctors = Doctor.sort()
   erb(:doctors_list)
 end
 
@@ -27,7 +27,7 @@ post("/doctors") do
   specialty = params.fetch("specialty")
   doctor = Doctor.new({:name => name, :specialty => specialty, :id => nil})
   doctor.save()
-  @doctors = Doctor.all()
+  @doctors = Doctor.sort()
   erb(:doctors_list)
 end
 

@@ -5,9 +5,10 @@
 
   <ul>
     <% @doctors.each() do |doctor| %>
-      <li><a href="/doctor/<%= doctor.id()%>"><%= doctor.name() %><%=", "%><%= doctor.specialty() %></a> </li>
+      <li><a href="/doctor/<%= doctor.id()%>"><%= doctor.name() %><%=" - "%><%= doctor.specialty() %><%=" - Currently in care: "%><%= doctor.number_of_patients(doctor.id).first().fetch("count") %></a> </li>
     <% end %>
   </ul>
+
 
 <% else %>
 

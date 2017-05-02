@@ -67,4 +67,19 @@ describe("Doctor") do
     end
   end
 
+  describe("#sort") do
+      it("returns an array of doctors in alphabetical") do
+        test_doctor1 = Doctor.new({:name => "Andrews", :specialty => "Optometry", :specialty_id => 1, :id => nil})
+        test_doctor1.save()
+        test_doctor2 = Doctor.new({:name => "Jones", :specialty => "Optometry", :specialty_id => 1, :id => nil})
+        test_doctor2.save()
+        test_doctor3 = Doctor.new({:name => "Warsame", :specialty => "Optometry", :specialty_id => 1, :id => nil})
+        test_doctor3.save()
+        test_doctor4 = Doctor.new({:name => "Rutan", :specialty => "Optometry", :specialty_id => 1, :id => nil})
+        test_doctor4.save()
+        expect(Doctor.sort()).to(eq([test_doctor1, test_doctor2, test_doctor4, test_doctor3]))
+      end
+    end
+
+
 end
