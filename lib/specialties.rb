@@ -36,10 +36,10 @@ class Specialty
     found_specialty
   end
 
-  define_method(:doctors) do |id|
+  define_method(:doctors) do |specialty_id|
     found_doctors = []
-    Doctors.all().each() do |doctor|
-      if doctor.specialty_id().==(id)
+    Doctor.all().each() do |doctor|
+      if doctor.specialty_id().==(specialty_id)
         found_doctors.push(doctor)
       end
     end

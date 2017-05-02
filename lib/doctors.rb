@@ -1,9 +1,10 @@
 class Doctor
-  attr_accessor(:name, :specialty, :id)
+  attr_accessor(:name, :specialty, :specialty_id, :id)
 
   define_method(:initialize) do |attributes|
     @name = attributes.fetch(:name)
     @specialty = attributes.fetch(:specialty)
+    @specialty_id = attributes.fetch(:specialty_id)
     @id = attributes.fetch(:id)
   end
 
@@ -14,13 +15,14 @@ class Doctor
       name = doctor.fetch("name")
       specialty = doctor.fetch("specialty")
       id = doctor.fetch("id").to_i()
-      doctors.push(Doctor.new({:name => name, :specialty => specialty, :id => id}))
+      specialty_id = doctor.fetch("specialty_id").to_i()
+      doctors.push(Doctor.new({:name => name, :specialty => specialty, :specialty_id => specialty_id, :id => id}))
     end
     doctors
   end
 
   define_method(:save) do
-    result = DB.exec("INSERT INTO doctors (name, specialty) VALUES ('#{@name}', '#{@specialty}') RETURNING id;")
+    result = DB.exec("INSERT INTO doctors (name, specialty, specialty_id) VALUES ('#{@name}', '#{@specialty}', '#{@specialty_id}') RETURNING id;")
     @id = result.first().fetch("id").to_i()
   end
 

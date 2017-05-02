@@ -23,40 +23,40 @@ describe("Specialty") do
   end
 
   describe("#save") do
-    it("lets you save the doctors to the database") do
-      doctor = Doctor.new({:name => "Dr. Andrews", :specialty => "Optometry", :id => nil})
-      doctor.save()
-      expect(Doctor.all()).to(eq([doctor]))
+    it("lets you save the specialty to the database") do
+      specialty = Specialty.new({:name => "Optometry", :id => nil})
+      specialty.save()
+      expect(Specialty.all()).to(eq([specialty]))
     end
   end
 
   describe("#==") do
-    it("is the same doctor if it has the same name and id") do
-      doctor1 = Doctor.new({:name => "Dr. Andrews", :specialty => "Optometry", :id => nil})
-      doctor2 = Doctor.new({:name => "Dr. Andrews", :specialty => "Optometry", :id => nil})
-      expect(doctor1).to(eq(doctor2))
+    it("is the same specialty if it has the same name and id") do
+      specialty1 = Specialty.new({:name => "Optometry", :id => nil})
+      specialty2 = Specialty.new({:name => "Optometry", :id => nil})
+      expect(specialty1).to(eq(specialty2))
     end
   end
-
+  #
   describe(".find") do
-    it("returns a doctor by its ID") do
-      doctor1 = Doctor.new({:name => "Dr. Andrews", :specialty => "Optometry", :id => nil})
-      doctor1.save()
-      doctor2 = Doctor.new({:name => "Dr. Carter", :specialty => "Neurosurgery", :id => nil})
-      doctor2.save()
-      expect(Doctor.find(doctor2.id())).to(eq(doctor2))
+    it("returns a specialty by its ID") do
+      specialty1 = Specialty.new({:name => "Optometry", :id => nil})
+      specialty1.save()
+      specialty2 = Specialty.new({:name => "Neurosurgery", :id => nil})
+      specialty2.save()
+      expect(Specialty.find(specialty2.id())).to(eq(specialty2))
     end
   end
 
-  describe("#patients") do
-    it("returns an array of patients for that doctor") do
-      test_doctor = Doctor.new({:name => "Dr. Andrews", :specialty => "Optometry", :id => nil})
+  describe("#doctors") do
+    it("returns an array of doctors for that specialty") do
+      test_specialty = Specialty.new({:name => "Optometry", :id => nil})
+      test_specialty.save()
+      test_doctor = Doctor.new({:name => "Dr. Andrews", :specialty => "Optometry", :specialty_id => test_specialty.id(), :id => nil})
       test_doctor.save()
-      test_patient = Patient.new({:name => "Mark Jones", :doctor_id => test_doctor.id(), :birthday => "2008-11-11"})
-      test_patient.save()
-      test_patient2 = Patient.new({:name => "Ann Stevens", :doctor_id => test_doctor.id(), :birthday => "2008-11-11"})
-      test_patient2.save()
-      expect(test_doctor.patients(test_doctor.id())).to(eq([test_patient, test_patient2]))
+      test_doctor2 = Doctor.new({:name => "Dr. Carter", :specialty => "Optometry", :specialty_id => test_specialty.id(), :id => nil})
+      test_doctor2.save()
+      expect(test_specialty.doctors(test_specialty.id())).to(eq([test_doctor, test_doctor2]))
     end
   end
 
